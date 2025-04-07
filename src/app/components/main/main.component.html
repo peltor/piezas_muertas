@@ -4,14 +4,20 @@
     <label class="block text-sm font-medium text-gray-900 dark:text-white" for="file_quiter">Upload file</label>
     <input
       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-      id="file_quiter" type="file">
+      id="file_quiter"
+      type="file"
+      (change)="onFileChangeQuiter($event)" accept=".xlsx, .xls"
+    >
   </div>
   <div class="max-w-xl">
     <h2 class="font-bold text-xl">Cargar VHP Trazabilidad</h2>
     <label class="block text-sm font-medium text-gray-900 dark:text-white" for="file_vhp_trazab">Upload file</label>
     <input
       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-      id="file_vhp_trazab" type="file">
+      id="file_vhp_trazab"
+      type="file"
+      (change)="onFileChangeVHP($event)" accept=".xlsx, .xls"
+    >
   </div>
   <div class="max-w-xl">
     <h2 class="font-bold text-xl">Cargar Suspensos Trazabilidad <span class="text-red-600 text-sm">*Opcional</span></h2>
@@ -19,6 +25,9 @@
     <input
       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
       id="file_suspensos_trazab" type="file">
+  </div>
+  <div>
+    <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="filterData()">Default</button>
   </div>
 </section>
 
@@ -31,16 +40,13 @@
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
         <th scope="col" class="px-6 py-3">
-          Product name
+          Referencia
         </th>
         <th scope="col" class="px-6 py-3">
-          Color
+          Designación
         </th>
         <th scope="col" class="px-6 py-3">
-          Category
-        </th>
-        <th scope="col" class="px-6 py-3">
-          Price
+          Cantidad
         </th>
         <th scope="col" class="px-6 py-3">
           <span class="sr-only">Edit</span>
@@ -48,57 +54,24 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-          Apple MacBook Pro 17"
-        </th>
-        <td class="px-6 py-4">
-          Silver
-        </td>
-        <td class="px-6 py-4">
-          Laptop
-        </td>
-        <td class="px-6 py-4">
-          $2999
-        </td>
-        <td class="px-6 py-4 text-right">
-          <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-        </td>
-      </tr>
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-          Microsoft Surface Pro
-        </th>
-        <td class="px-6 py-4">
-          White
-        </td>
-        <td class="px-6 py-4">
-          Laptop PC
-        </td>
-        <td class="px-6 py-4">
-          $1999
-        </td>
-        <td class="px-6 py-4 text-right">
-          <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-        </td>
-      </tr>
-      <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-600">
-        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-          Magic Mouse 2
-        </th>
-        <td class="px-6 py-4">
-          Black
-        </td>
-        <td class="px-6 py-4">
-          Accessories
-        </td>
-        <td class="px-6 py-4">
-          $99
-        </td>
-        <td class="px-6 py-4 text-right">
-          <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-        </td>
-      </tr>
+        @for(item of resultadoComparacion;track item.referencia){
+          <tr class="{{item.estado === 0 ? 'bg-gray-800':(item.estado === 1 ? 'bg-green-800' : 'bg-yellow-800')}} dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+              {{item.referencia}}
+            </th>
+            <td class="px-6 py-4">
+              {{item.designacion}}
+            </td>
+            <td class="px-6 py-4">
+              {{item.cantidadQuiter}}
+            </td>
+            <td class="px-6 py-4 text-right">
+              <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+            </td>
+          </tr>
+        }
+
+
       </tbody>
     </table>
   </div>
