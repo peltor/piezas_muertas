@@ -19,12 +19,14 @@
       (change)="onFileChangeVHP($event)" accept=".xlsx, .xls"
     >
   </div>
-  <div class="max-w-xl">
+  <div class="max-w-xl opacity-[0.5] pointer-events-none">
     <h2 class="font-bold text-xl">Cargar Suspensos Trazabilidad <span class="text-red-600 text-sm">*(deshabilitado)</span></h2>
     <label class="block text-sm font-medium text-gray-900 dark:text-white" for="file_suspensos_trazab">Upload file</label>
     <input
       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-      id="file_suspensos_trazab" type="file" disabled>
+      id="file_suspensos_trazab" type="file"
+      disabled
+    >
   </div>
   <div class="w-full">
     <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800" (click)="filterData()">Comparar</button>
@@ -32,7 +34,13 @@
 </section>
 
 <section class="my-8">
-  <h2 class="text-xl font-bold uppercase my-2">Resultado</h2>
+  <div class="flex justify-between">
+    <h2 class="text-xl font-bold uppercase my-2">Resultado</h2>
+    <div>
+      <button [disabled]="resultadoComparacion.length === 0" (click)="downloadExcel()" type="button" [className]='resultadoComparacion.length === 0 ? "py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 " : "cursor-pointer focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"' >Excel</button>
+      <button [disabled]="resultadoComparacion.length === 0" (click)="downloadPDF()" type="button" [className]='resultadoComparacion.length === 0 ? "py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 " : "cursor-pointer focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" ' >PDF</button>
+    </div>
+  </div>
 
 
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -53,9 +61,6 @@
         </th>
         <th scope="col" class="px-6 py-3 text-center">
           Estado
-        </th>
-        <th scope="col" class="px-6 py-3">
-          <span class="sr-only">Edit</span>
         </th>
       </tr>
       </thead>
@@ -80,9 +85,6 @@
               }@else{
                 -
               }
-            </td>
-            <td class="px-6 py-4 text-right">
-              <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
             </td>
           </tr>
         }

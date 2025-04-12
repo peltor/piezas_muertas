@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-main',
@@ -11,21 +13,14 @@ import * as XLSX from 'xlsx';
 export class MainComponent {
   extractedDataQuiter: any[] = [];
   extractedDataVHP: any[] = [];
-  protected resultadoComparacion: ({
-    cantidadVHP: number;
-    sumaCantidad: any;
-    estado: number;
-    cantidadQuiter: any;
-    designacion: any;
-    referencia: any;
-  } | {
+  protected resultadoComparacion: {
     cantidadVHP: any;
     sumaCantidad: any;
     estado: number;
     cantidadQuiter: any;
     designacion: any;
     referencia: any;
-  })[] | undefined;
+  }[] = [];
 
 
   onFileChangeQuiter(event: any): void {
@@ -150,5 +145,73 @@ export class MainComponent {
       return a.referencia.localeCompare(b.referencia);
     });
     console.log(this.resultadoComparacion)
+  }
+
+  downloadExcel() {
+    if(this.resultadoComparacion?.length === 0) return console.log('no hay data')
+
+    // Transformar los datos según las reglas
+    const transformedData = this.resultadoComparacion.map(({ sumaCantidad, estado, ...rest }) => ({
+      ...rest,
+      estado: estado === 0 ? '-' : 'VHP'
+    }));
+
+    const workbook = XLSX.utils.book_new();
+
+    // Crea una hoja de trabajo a partir de los datos
+    const worksheet = XLSX.utils.json_to_sheet(transformedData);
+
+    // Añade la hoja al libro de trabajo
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Datos');
+
+    // Escribe el archivo Excel en formato binario
+    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+    // Guarda el archivo Excel
+    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+    // Crea un enlace temporal para descargar el archivo
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'Negativos_'+Date.now()+'.xlsx'; // Nombre del archivo
+    link.click();
+
+    // Limpia el objeto URL después de la descarga
+    URL.revokeObjectURL(link.href);
+
+  }
+
+  downloadPDF() {
+    if(this.resultadoComparacion?.length === 0) return console.log('no hay data')
+    // Crear una nueva instancia de jsPDF
+    const doc = new jsPDF();
+
+    // Añadir un título
+    doc.text('Datos Exportados', 10, 10);
+
+    // Convertir el array de datos en un formato adecuado para la tabla
+    const tableData = this.resultadoComparacion.map((item, index) => [
+      index + 1,
+      item.referencia,
+      item.designacion,
+      item.cantidadQuiter,
+      item.cantidadVHP,
+      item.estado === 0 ? '-' : 'VHP'
+    ]);
+
+    // Configurar las columnas de la tabla
+    const headers = [
+      ['#', 'Referencia', 'Designación', 'Cantidad Quiter', 'Cantidad VHP', 'Estado']
+    ];
+
+    // Usar autotable para generar la tabla
+    autoTable(doc,{
+      head: headers,
+      body: tableData,
+      startY: 20, // Espacio desde la parte superior
+    });
+
+    // Guardar el PDF
+    doc.save('datos_'+Date.now()+'.pdf');
   }
 }
