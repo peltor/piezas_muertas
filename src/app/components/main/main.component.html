@@ -33,8 +33,8 @@
   </div>
 </section>
 
-<section class="my-8">
-  <div class="flex justify-between">
+<section class="my-8 max-w-full relative">
+  <div class="flex justify-between max-w-full w-[100vw]">
     <h2 class="text-xl font-bold uppercase my-2">Resultado</h2>
     <div>
       <button [disabled]="resultadoComparacion.length === 0" (click)="downloadExcel()" type="button" [className]='resultadoComparacion.length === 0 ? "py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 " : "cursor-pointer focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"' >Excel</button>
@@ -43,7 +43,7 @@
   </div>
 
 
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+  <div class="relative overflow-x-auto max-w-full w-[100vw] shadow-md sm:rounded-lg">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
       <tr>
