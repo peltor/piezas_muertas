@@ -1,6 +1,10 @@
 {
   "name": "piezas-muertas",
-  "version": "0.0.0",
+  "author": {
+    "name": "Alejandro Parras Hernández"
+  },
+  "homepage": "https://peltor.dev",
+  "version": "1.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
