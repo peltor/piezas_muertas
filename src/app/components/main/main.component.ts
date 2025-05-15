@@ -47,9 +47,9 @@ export class MainComponent {
       this.extractedDataQuiter = data
         .slice(1,data.length-3) // Ignora la fila de encabezado, si la primera fila contiene encabezados
         .map(row => ({
-          referencia: row[1], // Columna B (índice 1)
-          designacion: row[2], // Columna C (índice 2)
-          cantidad: row[6], // Columna G (índice 6)
+          referencia: row[0].split('/')[1], // Columna B (índice 1)
+          designacion: row[1], // Columna C (índice 2)
+          cantidad: row[5], // Columna G (índice 6)
         }))
         .filter(row => row.referencia !== undefined && row.designacion !== undefined && row.cantidad !== undefined); // Filtrar vacíos opcionalmente
     console.log(this.extractedDataQuiter);
